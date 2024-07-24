@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MemberManagerContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MemberManager\**\*.*</MemberManagerContentFilesPath>
+  </PropertyGroup>
+
+  <Target Name="CopyMemberManagerAssets" BeforeTargets="Build">
+    <ItemGroup>
+      <MemberManagerContentFiles Include="$(MemberManagerContentFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying MemberManager files: $(MemberManagerContentFilesPath) - #@(MemberManagerContentFiles->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MemberManagerContentFiles)" DestinationFiles="@(MemberManagerContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\MemberManager\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="ClearMemberManagerAssets" BeforeTargets="Clean">
+    <ItemGroup>
+      <MemberManagerDir Include="$(MSBuildProjectDirectory)\App_Plugins\MemberManager\" />
+    </ItemGroup>
+    <Message Text="Clear old MemberManager data" Importance="high" />
+    <RemoveDir Directories="@(MemberManagerDir)" />
+  </Target>
+</Project>
